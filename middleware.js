@@ -9,7 +9,7 @@ export async function middleware(request) {
   if(!(await isAuthenticated())){
     return NextResponse.redirect(new URL('/api/auth/login?post_login_redirect_url=/dashboard',request.url));
   }
-  return NextResponse.redirect(new URL('/home', request.url))
+ 
 }
  
 // See "Matching Paths" below to learn more
