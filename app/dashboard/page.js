@@ -5,7 +5,7 @@ function Dashboard (){
   const {setTheme} = useTheme();
 
   useEffect(()=>{
-    setTheme('system')
+    setTheme('light')
   },[])
   return (
     <div>page</div>
