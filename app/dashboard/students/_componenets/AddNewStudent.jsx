@@ -23,6 +23,9 @@ function AddNewStudent() {
   const [grades,setGrades] = useState([]);
   const onSubmit=(data)=>{
     console.log('FormData',data);
+    GlobalApi.CreateNewStudent(data).then(resp=>{
+      console.log("---",resp);
+    })
   }
 
   useEffect(()=>{
@@ -72,7 +75,7 @@ function AddNewStudent() {
                 </div>
                 <div className='flex gap-2 items-center justify-end mt-5'>
                   <Button onClick={() => setOpen(false)} variant="ghost">Cancel</Button>
-                  <Button type='submit' onClick={() => console.log(save)}>Save</Button>
+                  <Button type='submit' onClick={() => onSubmit}>Save</Button>
                 </div>
               </form>
             </DialogDescription>
