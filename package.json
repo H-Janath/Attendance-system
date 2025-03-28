@@ -13,6 +13,9 @@
   "dependencies": {
     "@kinde-oss/kinde-auth-nextjs": "^2.5.6",
     "@prisma/client": "^6.5.0",
+    "@radix-ui/react-dialog": "^1.1.6",
+    "@radix-ui/react-slot": "^1.1.2",
+    "axios": "^1.8.4",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "dotenv": "^16.4.7",
@@ -28,6 +31,7 @@
     "prisma": "^6.5.0",
     "react": "^18",
     "react-dom": "^18",
+    "react-hook-form": "^7.54.2",
     "tailwind-merge": "^3.0.2",
     "tailwindcss-animate": "^1.0.7"
   },

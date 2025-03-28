@@ -1,5 +1,4 @@
 "use client"
-import {RegisterLink, LoginLink} from "@kinde-oss/kinde-auth-nextjs/components";
 import { redirect } from "next/navigation";
 import { useEffect } from "react";
 
