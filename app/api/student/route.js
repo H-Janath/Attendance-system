@@ -1,8 +1,8 @@
 import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
-
+const prisma = new PrismaClient();
 export async function POST(req, res) {
-    const prisma = new PrismaClient();
+    
     const data = await req.json();
         const result = await prisma.student.create({
             data: {
@@ -14,4 +14,10 @@ export async function POST(req, res) {
         });
 
         return NextResponse.json(result);
+}
+
+export async function GET(req) {
+
+    const result = await prisma.student.findMany();
+    return NextResponse.json(result);
 }

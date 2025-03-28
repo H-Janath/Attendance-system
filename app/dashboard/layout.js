@@ -1,6 +1,7 @@
 import React from 'react'
 import SideNav from './_componenets/SideNav'
 import Header from './_componenets/Header'
+import { ToastContainer } from 'react-toastify'
 
 function layout ({children}){
   return (
@@ -12,7 +13,7 @@ function layout ({children}){
         <Header/>
       {children}
       </div>
-      
+      <ToastContainer />
     </div>
   )
 }

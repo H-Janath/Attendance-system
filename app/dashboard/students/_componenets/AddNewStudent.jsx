@@ -11,20 +11,31 @@ import {
 } from "@/components/ui/dialog"
 import { useForm } from 'react-hook-form'
 import GlobalApi from '@/app/_services/GlobalApi'
+import { toast } from 'react-toastify'
+import { LoaderIcon } from 'lucide-react'
 
 function AddNewStudent() {
   const {
     register,
     handleSubmit,
-    watch,
+    reset,
     formState: { errors },
   } = useForm();
+  const [loading,setLoading] = useState(false);
   const [open, setOpen] = useState();
   const [grades,setGrades] = useState([]);
   const onSubmit=(data)=>{
-    console.log('FormData',data);
+    setLoading(true)
     GlobalApi.CreateNewStudent(data).then(resp=>{
       console.log("---",resp);
+      if(resp.data)
+      {
+        setLoading(false)
+        reset();
+        setOpen(false)
+        toast("New student addes!")
+      }
+      setLoading(false);
     })
   }
 
@@ -75,14 +86,17 @@ function AddNewStudent() {
                 </div>
                 <div className='flex gap-2 items-center justify-end mt-5'>
                   <Button onClick={() => setOpen(false)} variant="ghost">Cancel</Button>
-                  <Button type='submit' onClick={() => onSubmit}>Save</Button>
+                  <Button type='submit' 
+                  disable={loading}
+                  onClick={() => onSubmit}>
+                    {loading? <LoaderIcon className='animate-spin'/> :
+                    'Save'}</Button>
                 </div>
               </form>
             </DialogDescription>
           </DialogHeader>
         </DialogContent>
       </Dialog>
-
     </div>
   )
 }
