@@ -22,7 +22,10 @@ function Student(){
       <h2 className='font-bold text-2xl flex justify-between items-center'>Students
       <AddNewStudent/>
       </h2>
-      <StudentListTable studentList={studentList}/>
+      <StudentListTable 
+      studentList={studentList}
+      refresData={GetAllStudents}
+      />
     </div>
   )
 }
