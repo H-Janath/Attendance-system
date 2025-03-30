@@ -21,15 +21,14 @@ function AddNewStudent() {
     reset,
     formState: { errors },
   } = useForm();
-  const [loading,setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState();
-  const [grades,setGrades] = useState([]);
-  const onSubmit=(data)=>{
+  const [grades, setGrades] = useState([]);
+  const onSubmit = (data) => {
     setLoading(true)
-    GlobalApi.CreateNewStudent(data).then(resp=>{
-      console.log("---",resp);
-      if(resp.data)
-      {
+    GlobalApi.CreateNewStudent(data).then(resp => {
+      console.log("---", resp);
+      if (resp.data) {
         setLoading(false)
         reset();
         setOpen(false)
@@ -39,18 +38,18 @@ function AddNewStudent() {
     })
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     GetAllGradesList()
-  },[])
+  }, [])
 
-  const GetAllGradesList =()=>{
-    GlobalApi.GetAllGrades().then(resp=>{
+  const GetAllGradesList = () => {
+    GlobalApi.GetAllGrades().then(resp => {
       setGrades(resp.data);
       console.log(resp.data)
-  })
+    })
   }
-  
-  
+
+
   return (
     <div>
       <Button onClick={() => setOpen(true)} className="font-bold text-2xl">+ Add New Student</Button>
@@ -71,9 +70,9 @@ function AddNewStudent() {
                   <select className='p-3 border rounded-lg'
                     {...register('grade', { required: true })}
                   >
-                   {grades.map((item,index)=>(
-                    <option key={`${item.grade}`} value={`${item.grade}`}>{item.grade}</option>
-                   ))}
+                    {grades.map((item, index) => (
+                      <option key={`${item.grade}`} value={`${item.grade}`}>{item.grade}</option>
+                    ))}
                   </select>
                 </div>
                 <div className='py-2'>
@@ -86,11 +85,11 @@ function AddNewStudent() {
                 </div>
                 <div className='flex gap-2 items-center justify-end mt-5'>
                   <Button onClick={() => setOpen(false)} variant="ghost">Cancel</Button>
-                  <Button type='submit' 
-                  disable={loading}
-                  onClick={() => onSubmit}>
-                    {loading? <LoaderIcon className='animate-spin'/> :
-                    'Save'}</Button>
+                  <Button type='submit'
+                    disable={loading}
+                    onClick={() => onSubmit}>
+                    {loading ? <LoaderIcon className='animate-spin' /> :
+                      'Save'}</Button>
                 </div>
               </form>
             </DialogDescription>

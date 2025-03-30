@@ -10,14 +10,28 @@ datasource db {
 }
 
 model Grade {
-  id    Int    @id @default(autoincrement())
-  grade String @db.VarChar(10)
-}
-model Student {
-  id      Int     @id @default(autoincrement())
-  name    String  @db.VarChar(20)
-  grade   String  @db.VarChar(10)
-  address String? @db.VarChar(50)
-  contact String? @db.VarChar(11)
+  id       Int       @id @default(autoincrement())
+  grade    String    @db.VarChar(10)
+  students Student[] // 1-to-many relationship
 }
 
+model Student {
+  id        Int          @id @default(autoincrement())
+  name      String       @db.VarChar(20)
+  gradeId   Int
+  address   String?      @db.VarChar(50)
+  contact   String?      @db.VarChar(11)
+
+  grade     Grade        @relation(fields: [gradeId], references: [id])
+  attendance Attendance[] // 1-to-many relationship
+}
+
+model Attendance {
+  id        Int     @id @default(autoincrement())
+  studentId Int
+  present   Boolean @default(false)
+  day       Int
+  date      String  @db.VarChar(20)
+
+  student   Student @relation(fields: [studentId], references: [id])
+}
