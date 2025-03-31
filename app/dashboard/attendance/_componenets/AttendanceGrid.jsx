@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import moment from 'moment';
+import GlobalApi from '@/app/_services/GlobalApi';
+import { toast } from 'react-toastify';
 
 const pagination = true;
 const paginationPageSize = 500;
@@ -32,20 +34,17 @@ function AttendanceGrid({ attendanceList, selectedMonth }) {
                     field:date.toString(),width:50,editable:true
                 }])
                 userList.forEach(obj=>{
-                    obj[date] = isPresent(obj.studentId,date);
+                    obj[date] = isPresent(obj.studentId,date.toString());
                 })
             })
 
         }
-       
-        
     }, [attendanceList, selectedMonth]);
 
     const isPresent=(studentId,day)=>{
         const result = attendanceList.find(item=>item.day===day&&item.studentId===studentId);
         return result?true:false;
     }
-    console.log(attendanceList)
     const getUniqueRecord = () => {
         const uniqueRecord = [];
         const existingUser = new Set();
@@ -60,12 +59,36 @@ function AttendanceGrid({ attendanceList, selectedMonth }) {
         return uniqueRecord;
     };
 
+    const onMarkAttendance=(day,studentId,presentStatus)=>{
+        console.log(day)
+
+        const date = moment(selectedMonth).format('MM/YYYY');
+
+        if(presentStatus){
+            const data ={
+                day:day,
+                studentId: studentId,
+                present: presentStatus,
+                date: date
+            }
+            GlobalApi.MarkAttendance(data).then(resp=>{
+                console.log(resp);
+                toast("StudentId: "+studentId+ " Marked as present");
+            })
+        }else{
+            GlobalApi.MarkAttendanceAsAbsent(studentId,day,date)
+            .then(resp=>{
+                toast("StudentId: "+studentId+ " Marked as absent");
+            })
+        }
+    }
     return (
         <div className="ag-theme-alpine" style={{ height: 500, width: '100%' }}>
             <h2>Users</h2>
             <AgGridReact
                 rowData={rowData}
                 columnDefs={colDef}
+                onCellValueChanged={(e)=> onMarkAttendance(e.colDef.field,e.data.studentId,e.newValue)}
                 pagination={pagination}
                 paginationPageSize={paginationPageSize}
                 paginationPageSizeSelector={paginationPageSizeSelector}

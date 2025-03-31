@@ -30,8 +30,11 @@ model Attendance {
   id        Int     @id @default(autoincrement())
   studentId Int
   present   Boolean @default(false)
-  day       Int
+  day       String
   date      String  @db.VarChar(20)
 
   student   Student @relation(fields: [studentId], references: [id])
+
+  @@unique([studentId, day, date]) // 👈 This ensures uniqueness
 }
+

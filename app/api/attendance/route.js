@@ -58,3 +58,47 @@ export async function GET(req) {
 
     return NextResponse.json(result);
 }
+
+export async function POST(req) {
+   
+    try {
+        const data = await req.json();
+        
+
+        const result = await prisma.attendance.create({
+            data: {
+                studentId: data.studentId,
+                present: data.present,
+                day: data.day,
+                date: data.date // Ensure date is in correct format
+            }
+        });
+
+        return NextResponse.json(result);
+    } catch (error) {
+        return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+}
+export async function DELETE(req) {
+    try {
+        const searchParams = req.nextUrl.searchParams;
+        const studentId = searchParams.get('studentId');
+        const date = searchParams.get('date');
+        const day = searchParams.get('day');
+
+        const result = await prisma.attendance.delete({
+            where: {
+                studentId_day_date: {
+                    studentId: parseInt(studentId),
+                    day:  day,
+                    date: date
+                }
+            }
+        });
+        
+        return NextResponse.json(result);
+    } catch (error) {
+        return NextResponse.json({error: error.message},{status:500});
+    }
+    
+}
