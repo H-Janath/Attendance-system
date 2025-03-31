@@ -14,7 +14,7 @@ import GlobalApi from '@/app/_services/GlobalApi'
 import { toast } from 'react-toastify'
 import { LoaderIcon } from 'lucide-react'
 
-function AddNewStudent() {
+function AddNewStudent({ refresData}) {
   const {
     register,
     handleSubmit,
@@ -33,6 +33,7 @@ function AddNewStudent() {
         reset();
         setOpen(false)
         toast("New student addes!")
+        refresData();
       }
       setLoading(false);
     })

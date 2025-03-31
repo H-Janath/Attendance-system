@@ -5,6 +5,7 @@ import 'ag-grid-community/styles/ag-theme-alpine.css';
 import moment from 'moment';
 import GlobalApi from '@/app/_services/GlobalApi';
 import { toast } from 'react-toastify';
+import { getUniqueRecord } from '@/app/_services/services';
 
 const pagination = true;
 const paginationPageSize = 500;
@@ -27,7 +28,7 @@ function AttendanceGrid({ attendanceList, selectedMonth }) {
 
     useEffect(() => {
         if(attendanceList){
-            const userList = getUniqueRecord();
+            const userList = getUniqueRecord(attendanceList);
             setRowData(userList);
             daysArray.forEach((date)=>{
                 setColDef(prevData=>[...prevData,{
@@ -45,19 +46,7 @@ function AttendanceGrid({ attendanceList, selectedMonth }) {
         const result = attendanceList.find(item=>item.day===day&&item.studentId===studentId);
         return result?true:false;
     }
-    const getUniqueRecord = () => {
-        const uniqueRecord = [];
-        const existingUser = new Set();
-
-        attendanceList?.forEach(record => {
-            if (!existingUser.has(record.studentId)) {
-                existingUser.add(record.studentId);
-                uniqueRecord.push(record);
-            }
-        });
-
-        return uniqueRecord;
-    };
+    
 
     const onMarkAttendance=(day,studentId,presentStatus)=>{
         console.log(day)

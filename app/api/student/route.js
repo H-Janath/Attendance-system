@@ -4,16 +4,25 @@ const prisma = new PrismaClient();
 export async function POST(req, res) {
     
     const data = await req.json();
-        const result = await prisma.student.create({
-            data: {
-                name: data.name,
-                grade: data.grade,
-                address: data.address,
-                contact: data.contact
-            }
-        });
 
-        return NextResponse.json(result);
+    const gradeRecord = await prisma.grade.findFirst({
+        where: {
+            grade: data.grade
+        }
+    });
+    
+    if (!gradeRecord) {
+        throw new Error("Grade not found");
+    }
+    const result = await prisma.student.create({
+        data: {
+            name: data.name,
+            gradeId: gradeRecord.id,
+            address: data.address,
+            contact: data.contact
+        }
+    });
+    return NextResponse.json(result);
 }
 
 export async function GET(req) {
